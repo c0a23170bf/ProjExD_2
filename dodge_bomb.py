@@ -25,12 +25,7 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
-def gameover():
-    fonto = pg.font.Font(None, 80)
-    pienton = pg.image.load("fig/8.png")
-    txt = fonto.render("Game over",
-    True, (255,255,255))
-    return txt
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -44,30 +39,33 @@ def main():
     bd_img = pg.Surface((20, 20))
     bd_img.set_colorkey((0, 0, 0))
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
-    naku = pg.image.load("fig/8.png")
     bd_rct = bd_img.get_rect()
     bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5  # 横方向速度，縦方向速度
     clock = pg.time.Clock()
     tmr = 0
-    txt = gameover()
 
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-                return 
-        if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾がぶつかったら
+            
+        if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾がぶつかったらGame over
+            txt = gameover(screen)
             print("Game Over")
+            '''
+            # ブラックアウトを表示
             bout = pg.Surface((1600,900))
             pg.draw.rect(bout,(0,0,0),(0,0,1600,900))
             bout.set_alpha(200)
             screen.blit(bout, [0,0])
+            # Game Overを表示
             screen.blit(txt, [650, 450])
+            # こうかとんの泣いている画像の表示
             screen.blit(naku, [600,450])
             screen.blit(naku, [950,450])
             pg.display.update()
-            time.sleep(5)
+            time.sleep(5)'''
             return
         screen.blit(bg_img, [0, 0]) 
 
@@ -93,6 +91,28 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
+
+def gameover(screen): # Game Overを表示
+    naku = pg.image.load("fig/8.png")
+    fonto = pg.font.Font(None, 80)
+    pienton = pg.image.load("fig/8.png")
+    txt = fonto.render("Game over",
+    True, (255,255,255))
+    print("Game Over")
+        # ブラックアウトを表示
+    bout = pg.Surface((1600,900))
+    pg.draw.rect(bout,(0,0,0),(0,0,1600,900))
+    bout.set_alpha(200)
+    screen.blit(bout, [0,0])
+        # Game Overを表示
+    screen.blit(txt, [650, 450])
+        # こうかとんの泣いている画像の表示
+    screen.blit(naku, [600,450])
+    screen.blit(naku, [950,450])
+    pg.display.update()
+    time.sleep(5)
+    return txt
+
 if __name__ == "__main__":
     pg.init()
     main()
